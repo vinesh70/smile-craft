@@ -37,11 +37,15 @@ export default function Footer() {
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          {/* Top section - large wordmark */}
-          <div className="mb-12 pb-12 border-b border-white/10">
+          {/* Decorative wordmark — stroke-only outline, fixed height, never pushes layout */}
+          <div className="relative h-16 sm:h-24 mb-8 sm:mb-12 border-b border-white/10 overflow-hidden">
             <h2
-              className="text-6xl sm:text-8xl font-semibold text-white/5 select-none"
-              style={{ fontFamily: "var(--font-fraunces, serif)" }}
+              className="absolute bottom-0 left-0 text-7xl sm:text-9xl font-semibold select-none whitespace-nowrap leading-none pointer-events-none"
+              style={{
+                fontFamily: "var(--font-fraunces, serif)",
+                color: "transparent",
+                WebkitTextStroke: "1px rgba(72, 202, 228, 0.12)",
+              }}
             >
               SmileCraft
             </h2>

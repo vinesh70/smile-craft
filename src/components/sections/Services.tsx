@@ -23,12 +23,11 @@ interface ServicesProps {
 }
 
 function ServiceCard({
-  service, index, onBookService, large = false,
+  service, index, onBookService,
 }: {
   service: (typeof services)[0];
   index: number;
   onBookService: (id: string) => void;
-  large?: boolean;
 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
@@ -42,9 +41,7 @@ function ServiceCard({
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ delay: index * 0.08, duration: 0.5 }}
       whileHover={{ y: -4 }}
-      className={`group relative flex flex-col rounded-3xl p-5 sm:p-6 overflow-hidden transition-shadow hover:shadow-2xl ${
-        large ? "sm:row-span-2 sm:col-span-2" : ""
-      }`}
+      className="group relative flex flex-col rounded-3xl p-5 sm:p-6 overflow-hidden transition-shadow hover:shadow-2xl"
       style={{
         backgroundColor: "var(--sc-card-bg)",
         border: "1px solid var(--sc-card-border)",
@@ -139,14 +136,13 @@ export default function Services({ onBookService }: ServicesProps) {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {services.map((service, i) => (
             <ServiceCard
               key={service.id}
               service={service}
               index={i}
               onBookService={onBookService}
-              large={i === 0}
             />
           ))}
         </div>

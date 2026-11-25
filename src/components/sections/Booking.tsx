@@ -64,16 +64,16 @@ function StepIndicator({
   totalSteps: number;
 }) {
   return (
-    <div className="flex items-center justify-center gap-0 mb-8">
+    <div className="flex items-center justify-center gap-0 mb-8 w-full px-2">
       {STEPS.map((step, i) => {
         const StepIcon = step.icon;
         const isComplete = i < currentStep;
         const isCurrent = i === currentStep;
         return (
-          <div key={i} className="flex items-center">
+          <div key={i} className="flex items-center min-w-0">
             <div className="flex flex-col items-center">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                className={`w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 shrink-0 ${
                   isComplete
                     ? "bg-teal text-white"
                     : isCurrent
@@ -93,9 +93,9 @@ function StepIndicator({
                 }
               >
                 {isComplete ? (
-                  <Check className="w-4 h-4" />
+                  <Check className="w-3 h-3 sm:w-4 sm:h-4" />
                 ) : (
-                  <StepIcon className="w-4 h-4" />
+                  <StepIcon className="w-3 h-3 sm:w-4 sm:h-4" />
                 )}
               </div>
               <span
@@ -113,7 +113,7 @@ function StepIndicator({
             </div>
             {i < STEPS.length - 1 && (
               <div
-                className={`h-0.5 w-8 sm:w-12 mx-1 sm:mx-2 mt-[-20px] sm:mt-[-20px] transition-all duration-500 ${
+                className={`h-0.5 w-3 sm:w-10 mx-0.5 sm:mx-2 mt-[-18px] sm:mt-[-20px] shrink-0 transition-all duration-500 ${
                   isComplete ? "" : "bg-black/10 dark:bg-white/10"
                 }`}
                 style={isComplete ? { backgroundColor: "#0F4C5C" } : {}}
@@ -135,6 +135,7 @@ function CalendarPicker({
 }) {
   const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
   const [viewMonth, setViewMonth] = useState(() => new Date().getMonth());
+  const [hovered, setHovered] = useState<string | null>(null);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -143,100 +144,145 @@ function CalendarPicker({
   const firstDayOfMonth = new Date(viewYear, viewMonth, 1).getDay();
 
   const prevMonth = () => {
-    if (viewMonth === 0) {
-      setViewMonth(11);
-      setViewYear((y) => y - 1);
-    } else {
-      setViewMonth((m) => m - 1);
-    }
+    if (viewMonth === 0) { setViewMonth(11); setViewYear((y) => y - 1); }
+    else setViewMonth((m) => m - 1);
   };
 
   const nextMonth = () => {
-    if (viewMonth === 11) {
-      setViewMonth(0);
-      setViewYear((y) => y + 1);
-    } else {
-      setViewMonth((m) => m + 1);
-    }
+    if (viewMonth === 11) { setViewMonth(0); setViewYear((y) => y + 1); }
+    else setViewMonth((m) => m + 1);
   };
 
-  const monthName = new Date(viewYear, viewMonth, 1).toLocaleDateString(
-    "en-US",
-    { month: "long", year: "numeric" }
-  );
+  const monthName = new Date(viewYear, viewMonth, 1).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
 
   const days: Array<{ date: Date | null; available: boolean }> = [];
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    days.push({ date: null, available: false });
-  }
+  for (let i = 0; i < firstDayOfMonth; i++) days.push({ date: null, available: false });
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(viewYear, viewMonth, d);
     days.push({ date, available: isDateAvailable(date) });
   }
 
   return (
-    <div className="rounded-2xl border border-black/10 dark:border-white/10 p-4 max-w-sm mx-auto">
-      <div className="flex items-center justify-between mb-4">
+    <div
+      style={{
+        border: "1px solid rgba(0,0,0,0.1)",
+        borderRadius: "1rem",
+        padding: "1rem",
+        maxWidth: "360px",
+        margin: "0 auto",
+        backgroundColor: "#fff",
+      }}
+    >
+      {/* Month navigation */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
         <button
           onClick={prevMonth}
-          className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
           aria-label="Previous month"
+          style={{
+            padding: "6px",
+            borderRadius: "50%",
+            border: "none",
+            background: "rgba(0,0,0,0.05)",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <ChevronLeft style={{ width: 18, height: 18, color: "#555" }} />
         </button>
-        <span className="font-semibold text-gray-800 dark:text-white">
-          {monthName}
-        </span>
+        <span style={{ fontWeight: 600, fontSize: "0.95rem", color: "#1a1a1a" }}>{monthName}</span>
         <button
           onClick={nextMonth}
-          className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
           aria-label="Next month"
+          style={{
+            padding: "6px",
+            borderRadius: "50%",
+            border: "none",
+            background: "rgba(0,0,0,0.05)",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <ChevronRight style={{ width: 18, height: 18, color: "#555" }} />
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 mb-2">
+      {/* Day headers */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: "4px", marginBottom: "6px" }}>
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
           <div
             key={d}
-            className="text-center text-xs font-semibold text-black/40 dark:text-white/40 py-1"
+            style={{
+              textAlign: "center",
+              fontSize: "0.7rem",
+              fontWeight: 600,
+              color: "rgba(0,0,0,0.4)",
+              padding: "4px 0",
+            }}
           >
             {d}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
+      {/* Day cells */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: "4px" }}>
         {days.map((day, i) => {
-          if (!day.date) {
-            return <div key={`empty-${i}`} />;
-          }
+          if (!day.date) return <div key={`empty-${i}`} />;
+
           const dateStr = day.date.toISOString().split("T")[0];
           const isSelected = dateStr === selectedDate;
           const isToday = day.date.toDateString() === new Date().toDateString();
+          const isHov = hovered === dateStr && day.available && !isSelected;
+
+          let bg = "transparent";
+          let color = day.available ? "#1a1a1a" : "rgba(0,0,0,0.25)";
+          let border = "none";
+          let fontWeight: number | string = isToday ? 700 : 400;
+
+          if (isSelected) {
+            bg = "#0F4C5C";
+            color = "#ffffff";
+            fontWeight = 700;
+          } else if (isHov) {
+            bg = "rgba(72,202,228,0.15)";
+            color = "#0F4C5C";
+          } else if (isToday && !isSelected) {
+            border = "2px solid #48CAE4";
+          }
 
           return (
             <button
               key={dateStr}
               onClick={() => day.available && onSelectDate(dateStr)}
+              onMouseEnter={() => setHovered(dateStr)}
+              onMouseLeave={() => setHovered(null)}
               disabled={!day.available}
               aria-label={`${day.available ? "Select" : "Unavailable"} ${dateStr}`}
               aria-pressed={isSelected}
-              className={`aspect-square flex items-center justify-center rounded-full text-sm transition-all duration-200 ${
-                isSelected
-                  ? "text-white font-semibold"
-                  : day.available
-                  ? "hover:bg-teal/10 text-gray-800 dark:text-white cursor-pointer"
-                  : "text-black/20 dark:text-white/20 cursor-not-allowed"
-              } ${isToday && !isSelected ? "font-bold ring-2" : ""}`}
-              style={
-                isSelected
-                  ? { backgroundColor: "#0F4C5C" }
-                  : isToday && !isSelected
-                  ? { outline: "2px solid #48CAE4", outlineOffset: "-2px" }
-                  : {}
-              }
+              style={{
+                aspectRatio: "1",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                fontSize: "0.8rem",
+                fontWeight,
+                backgroundColor: bg,
+                color,
+                border,
+                cursor: day.available ? "pointer" : "not-allowed",
+                transition: "all 0.15s ease",
+                outline: "none",
+                padding: 0,
+                minWidth: 0,
+              }}
             >
               {day.date.getDate()}
             </button>
@@ -1019,7 +1065,7 @@ export default function Booking({
                         </div>
 
                         <div className="text-xs text-center text-gray-400 mb-6">
-                          📍 123 Bright Smile Ave, Suite 200, San Francisco, CA
+                          📍 42, Linking Road, Bandra West, Mumbai 400050
                         </div>
 
                         <div className="flex gap-3">

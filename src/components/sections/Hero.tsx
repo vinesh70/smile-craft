@@ -176,14 +176,15 @@ export default function Hero({ onBookNow }: HeroProps) {
               />
             </div>
 
-            {/* Floating glass card - top left */}
+            {/* Floating glass card - top left (inside image bounds) */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -left-8 top-12 rounded-2xl px-4 py-3 shadow-2xl"
+              className="absolute left-4 top-8 rounded-2xl px-4 py-3 shadow-2xl"
               style={{
-                backgroundColor: "rgba(255,255,255,0.1)",
+                backgroundColor: "rgba(10,22,40,0.65)",
                 backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
                 border: "1px solid rgba(255,255,255,0.15)",
               }}
             >
@@ -205,10 +206,11 @@ export default function Hero({ onBookNow }: HeroProps) {
                 ease: "easeInOut",
                 delay: 1,
               }}
-              className="absolute -right-6 bottom-16 rounded-2xl px-4 py-3 shadow-2xl"
+              className="absolute right-4 bottom-8 rounded-2xl px-4 py-3 shadow-2xl"
               style={{
-                backgroundColor: "rgba(255,255,255,0.1)",
+                backgroundColor: "rgba(10,22,40,0.65)",
                 backdropFilter: "blur(16px)",
+                WebkitBackdropFilter: "blur(16px)",
                 border: "1px solid rgba(255,255,255,0.15)",
               }}
             >
