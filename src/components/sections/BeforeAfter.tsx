@@ -3,9 +3,9 @@ import { useState, useRef, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 
 const BEFORE_IMAGE =
-  "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&fit=crop&crop=center";
+  "https://images.unsplash.com/photo-1777793636393-a0fec488f3fb?w=800&fit=crop";
 const AFTER_IMAGE =
-  "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&fit=crop&crop=center";
+  "https://images.unsplash.com/photo-1677026010083-78ec7f1b84ed?w=800&fit=crop";
 
 export default function BeforeAfter() {
   const [position, setPosition] = useState(50);
